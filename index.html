@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cyber HTML Runner</title>
+  <style>
+    /* General Styles */
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background-color: #f4f4f4;
+    }
+
+    header {
+      background-color: #333;
+      color: #fff;
+      padding: 15px;
+      text-align: center;
+    }
+
+    .container {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      padding: 10px;
+      height: calc(100vh - 65px);
+    }
+
+    .editor-container, .output-container {
+      display: flex;
+      flex-direction: column;
+      background: #fff;
+      padding: 10px;
+      border-radius: 8px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    textarea {
+      flex: 1;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      padding: 10px;
+      font-family: monospace;
+      font-size: 14px;
+      resize: none;
+      background: #f9f9f9;
+    }
+
+    iframe {
+      flex: 1;
+      width: 100%;
+      height: 100%;
+      border: none;
+      border-radius: 8px;
+    }
+
+    .resize-controls {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 10px;
+    }
+
+    .resize-controls button {
+      flex: 1;
+      margin: 0 5px;
+      padding: 10px;
+      background-color: #333;
+      color: #fff;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    .resize-controls button:hover {
+      background-color: #444;
+    }
+
+    button {
+      background-color: #333;
+      color: #fff;
+      border: none;
+      padding: 10px;
+      margin-top: 10px;
+      cursor: pointer;
+      border-radius: 5px;
+      font-size: 16px;
+    }
+
+    button:hover {
+      background-color: #444;
+    }
+
+    /* Landing Page Styles */
+    #landing-page {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: url('https://4kwallpapers.com/images/walls/thumbs_3t/20065.jpg') no-repeat center center fixed;
+      background-size: cover;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      opacity: 1;
+      transition: opacity 1s;
+      z-index: 10;
+    }
+
+    #landing-page.hidden {
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .typing-effect {
+      font-size: 2em;
+      color: white;
+      white-space: nowrap;
+      overflow: hidden;
+      border-right: .1em solid white;
+      width: 0;
+      animation: typing 4s steps(40) 1s forwards, blink .75s step-end infinite;
+    }
+
+    .social-icons {
+      margin-top: 20px;
+    }
+
+    .social-icons img {
+      width: 40px;
+      margin: 0 10px;
+      transition: transform 0.3s;
+    }
+
+    .social-icons img:hover {
+      transform: scale(1.2);
+    }
+
+    /* Animation for text typing effect */
+    @keyframes typing {
+      from {
+        width: 0;
+      }
+      to {
+        width: 100%;
+      }
+    }
+
+    @keyframes blink {
+      50% {
+        border-color: transparent;
+      }
+    }
+
+    /* Responsive Design */
+    @media (max-width: 768px) {
+      .container {
+        grid-template-columns: 1fr;
+      }
+
+      .social-icons img {
+        width: 30px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Landing Page Animation -->
+  <div id="landing-page">
+    <div class="typing-effect" id="landing-text">
+      Welcome to Cyber HTML Runner
+    </div>
+    <div class="social-icons">
+      <a href="https://codepen.io/CyberNaveen" target="_blank">
+        <img src="https://e7.pngegg.com/pngimages/166/1007/png-clipart-codepen-computer-icons-kaya-scodelario-miscellaneous-celebrities-thumbnail.png" alt="Facebook">
+      </a>
+      <a href="instagram.com/kutty_rolex_naveen/" target="_blank">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/a/a5/Instagram_icon.png" alt="Twitter">
+      </a>
+      <a href="https://youtube.com/@kgfhackers" target="_blank">
+        <img src="data:image/png;base64,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" alt="Instagram">
+      </a>
+    </div>
+    <div style="color: white; margin-top: 30px;">
+      <p>Credits: Cyber Bro</p>
+    </div>
+  </div>
+
+  <!-- Main Content -->
+  <div class="container">
+    <!-- Editor Section -->
+    <div class="editor-container">
+      <textarea id="html-code" placeholder="Write HTML here..." oninput="updatePreview()"></textarea>
+      <textarea id="css-code" placeholder="Write CSS here..." oninput="updatePreview()"></textarea>
+      <textarea id="js-code" placeholder="Write JavaScript here..." oninput="updatePreview()"></textarea>
+      <button onclick="copyCode()">Copy Code</button>
+      <button onclick="downloadCode()">Download Code</button>
+    </div>
+
+    <!-- Output Section -->
+    <div class="output-container">
+      <iframe id="output" title="Live Output"></iframe>
+      <div class="resize-controls">
+        <button onclick="zoomOutput(-0.1)">-</button>
+        <button onclick="resetZoom()">Reset</button>
+        <button onclick="zoomOutput(0.1)">+</button>
+      </div>
+      <button onclick="copyOutput()">Copy Output</button>
+    </div>
+  </div>
+
+  <script>
+    let zoomLevel = 1; // Initialize zoom level
+
+    // Update the live preview
+    function updatePreview() {
+      const html = document.getElementById('html-code').value;
+      const css = `
+        <style>
+          body {
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            overflow: hidden;
+          }
+          * {
+            box-sizing: border-box;
+          }
+        </style>`;
+      const js = `<script>${document.getElementById('js-code').value}<\/script>`;
+
+      const output = document.getElementById('output');
+      output.srcdoc = html + css + js;
+    }
+
+    // Zoom the content inside the iframe
+    function zoomOutput(change) {
+      zoomLevel = Math.max(0.1, Math.min(zoomLevel + change, 10.0)); // Allow zoom from 0.1 to 10.0
+      const iframeDoc = document.getElementById('output').contentWindow.document.body;
+      iframeDoc.style.transform = `scale(${zoomLevel})`;
+      iframeDoc.style.transformOrigin = 'center center';
+    }
+
+    // Reset the zoom level
+    function resetZoom() {
+      zoomLevel = 1;
+      const iframeDoc = document.getElementById('output').contentWindow.document.body;
+      iframeDoc.style.transform = `scale(${zoomLevel})`;
+      iframeDoc.style.transformOrigin = 'center center';
+    }
+
+    // Copy the code from the textareas with password protection
+    function copyCode() {
+      const password = prompt("Enter the password to copy the code:");
+      if (password !== "cyber") {
+        alert("Incorrect password!");
+        return;
+      }
+
+      const html = document.getElementById('html-code').value;
+      const css = document.getElementById('css-code').value;
+      const js = document.getElementById('js-code').value;
+      const combinedCode = `<html>\n<style>${css}</style>\n${html}\n<script>${js}<\/script>\n</html>`;
+
+      navigator.clipboard.writeText(combinedCode).then(() => {
+        alert("Code copied to clipboard!");
+      }).catch(err => {
+        alert("Failed to copy code: " + err);
+      });
+    }
+
+    // Copy the live output with password protection
+    function copyOutput() {
+      const password = prompt("Enter the password to copy the output:");
+      if (password !== "cyber") {
+        alert("Incorrect password!");
+        return;
+      }
+
+      const iframeContent = document.getElementById('output').contentWindow.document.documentElement.outerHTML;
+      navigator.clipboard.writeText(iframeContent).then(() => {
+        alert("Output copied to clipboard!");
+      }).catch(err => {
+        alert("Failed to copy output: " + err);
+      });
+    }
+
+    // Download the code with password protection
+    function downloadCode() {
+      const password = prompt("Enter the password to download the code:");
+      if (password !== "cyber") {
+        alert("Incorrect password!");
+        return;
+      }
+
+      const html = document.getElementById('html-code').value;
+      const css = document.getElementById('css-code').value;
+      const js = document.getElementById('js-code').value;
+      const combinedCode = `<html>\n<style>${css}</style>\n${html}\n<script>${js}<\/script>\n</html>`;
+
+      const blob = new Blob([combinedCode], { type: "text/html" });
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      a.download = "code.html";
+      a.click();
+    }
+
+    // Hide the landing page after 20 seconds
+    setTimeout(() => {
+      document.getElementById('landing-page').classList.add('hidden');
+    }, 20000);
+
+    // Looping Typing Effect
+    const texts = [
+      "Welcome to Cyber HTML Runner",
+      "Create, Test, and Run Your Code Live!",
+      "Explore HTML, CSS, and JavaScript."
+    ];
+    let currentText = 0;
+    let typingEffect = document.getElementById('landing-text');
+
+    function startTypingEffect() {
+      typingEffect.innerHTML = "";
+      let currentLetter = 0;
+      let text = texts[currentText];
+      typingEffect.style.animation = 'none'; // Reset animation
+      typingEffect.offsetHeight; // Trigger reflow
+      typingEffect.style.animation = 'typing 4s steps(40) 1s forwards, blink .75s step-end infinite'; // Restart animation
+      let typingInterval = setInterval(function() {
+        typingEffect.innerHTML += text.charAt(currentLetter);
+        currentLetter++;
+        if (currentLetter === text.length) {
+          clearInterval(typingInterval);
+          setTimeout(function() {
+            currentText = (currentText + 1) % texts.length;
+            startTypingEffect(); // Restart the typing effect with the next text
+          }, 1500); // Wait before starting the next text
+        }
+      }, 100);
+    }
+
+    startTypingEffect(); // Start the typing effect when the page loads
+  </script>
+</body>
+</html>
