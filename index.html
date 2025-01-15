@@ -165,6 +165,51 @@
         width: 30px;
       }
     }
+    /*   password */
+   #passwordContainer {
+    margin-top: 20px;
+    animation: fadeIn 0.8s ease-in-out;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+} 
+/*    password  */
+#passwordContainer {
+    margin-top: 20px;
+    animation: fadeIn 0.8s ease-in-out;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+#passwordBox {
+    margin-top: 10px;
+    padding: 10px;
+    font-size: 18px;
+    font-weight: bold;
+    color: #007bff;
+    background-color: #f0f0f0;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    display: inline-block;
+}
+
   </style>
 </head>
 <body>
@@ -211,7 +256,14 @@
       <button onclick="copyOutput()">Copy Output</button>
     </div>
   </div>
-
+<br>
+ <button id="showPasswordButton">Show Password</button>
+    <button id="followButton" style="display: none;">Follow on Instagram</button>
+    <button id="backButton" style="display: none;">Back</button>
+    <div id="passwordContainer" style="display: none;">
+        <p>Your password is:</p>
+        <div id="passwordBox"></div>
+    </div>
   <script>
     let zoomLevel = 1; // Initialize zoom level
 
@@ -345,6 +397,53 @@
     }
 
     startTypingEffect(); // Start the typing effect when the page loads
+    // help //
+
+//password//
+// Get references to DOM elements
+const showPasswordButton = document.getElementById('showPasswordButton');
+const followButton = document.getElementById('followButton');
+const backButton = document.getElementById('backButton');
+const passwordContainer = document.getElementById('passwordContainer');
+const passwordBox = document.getElementById('passwordBox');
+
+// Predefined password
+const password = "cyber";
+
+// Instagram username to follow
+const instagramUsername = "kutty_rolex_naveen";
+
+// Step 1: Show Follow button
+showPasswordButton.addEventListener('click', () => {
+    followButton.style.display = 'inline-block';
+    showPasswordButton.style.display = 'none';
+});
+
+// Step 2: Redirect to Instagram
+followButton.addEventListener('click', () => {
+    // Redirect to Instagram profile
+    window.location.href = `https://www.instagram.com/${instagramUsername}/`;
+
+    // Show the Back button after a short delay
+    setTimeout(() => {
+        backButton.style.display = 'inline-block';
+        followButton.style.display = 'none';
+    }, 2000);
+});
+
+// Step 3: Reveal password and use voice
+backButton.addEventListener('click', () => {
+    // Display the password in the box
+    passwordBox.textContent = password;
+    passwordContainer.style.display = 'block';
+
+    // Read password aloud
+    const speech = new SpeechSynthesisUtterance(`Your password is: ${password}`);
+    speech.lang = 'en-US';
+    window.speechSynthesis.speak(speech);
+
+    backButton.style.display = 'none';
+});
   </script>
 </body>
 </html>
