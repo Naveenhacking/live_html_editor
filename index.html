@@ -419,27 +419,24 @@ const instagramUsername = "kutty_rolex_naveen";
 showPasswordButton.addEventListener('click', () => {
     followButton.style.display = 'inline-block';
     showPasswordButton.style.display = 'none';
-
-    // Automatically click the follow button after showing it
-    followButton.click();
 });
 
-// Step 2: Redirect to Instagram and Show Back button after a short delay
+// Step 2: Redirect to Instagram profile when Follow button is clicked
 followButton.addEventListener('click', () => {
-    // Redirect to Instagram profile
-    window.location.href = `https://www.instagram.com/${instagramUsername}/`;
+    // Check if the user is logged in (simulated check)
+    const isLoggedIn = false; // Replace this with actual login check logic
 
-    // Show the Back button after a short delay
-    setTimeout(() => {
-        // This simulates the user being back to the original page after visiting Instagram
-        backButton.style.display = 'inline-block';
-        followButton.style.display = 'none';
-    }, 2000);
+    if (!isLoggedIn) {
+        alert('You are not logged in. Please log in to Instagram to follow.');
+        window.location.href = 'https://www.instagram.com/accounts/login/';
+    } else {
+        // Redirect to Instagram profile to allow user to follow
+        window.location.href = `https://www.instagram.com/${instagramUsername}/`;
+    }
 });
 
-// Step 3: Reveal password and use voice when Back button is clicked
+// Step 3: Reveal password when back button is clicked
 backButton.addEventListener('click', () => {
-    // Display the password in the box
     passwordBox.textContent = password;
     passwordContainer.style.display = 'block';
 
