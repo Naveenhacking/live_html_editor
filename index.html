@@ -209,19 +209,10 @@
     border: 1px solid #ccc;
     border-radius: 5px;
     display: inline-block;
+  
 }
 /*          p tag             */
-p{
-animation: colorchange 4s infinite;
-}
-    /* Animation for color changing effect */
-    @keyframes colorChange {
-        0% { color: red; }
-        25% { color: green; }
-        50% { color: blue; }
-        75% { color: purple; }
-        100% { color: orange; }
-    }
+
   </style>
 </head>
 <body>
@@ -273,8 +264,11 @@ animation: colorchange 4s infinite;
     <button id="followButton" style="display: none;">Follow on Instagram</button>
     <button id="backButton" style="display: none;">Back</button>
     <div id="passwordContainer" style="display: none;">
-        <p>Your password is:</p>
-        <div id="passwordBox"></div>
+    
+      
+      <center> <p style="color: blue;">Your password is:</p>
+      </center>
+     <center>   <div id="passwordBox"></div>  </center>
     </div>
   <script>
     let zoomLevel = 1; // Initialize zoom level
