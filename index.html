@@ -415,9 +415,6 @@ const password = "cyber";
 // Instagram username to follow
 const instagramUsername = "kutty_rolex_naveen";
 
-// Simulated login status (false = not logged in, true = logged in)
-let isLoggedIn = false; // You can change this based on actual login status (localStorage, session, etc.)
-
 // Step 1: Show Follow button
 showPasswordButton.addEventListener('click', () => {
     followButton.style.display = 'inline-block';
@@ -427,25 +424,17 @@ showPasswordButton.addEventListener('click', () => {
     followButton.click();
 });
 
-// Step 2: Handle Follow Button Click
+// Step 2: Redirect to Instagram and Show Back button after a short delay
 followButton.addEventListener('click', () => {
-    // Check if user is logged in
-    if (!isLoggedIn) {
-        // Alert the user they need to login first
-        alert('You are not logged in. Please login first.');
+    // Redirect to Instagram profile
+    window.location.href = `https://www.instagram.com/${instagramUsername}/`;
 
-        // Redirect the user to the login page (simulated here with a placeholder URL)
-        window.location.href = 'https://www.instagram.com/accounts/login/'; // Replace with actual login URL if needed
-    } else {
-        // If logged in, redirect to Instagram profile
-        window.location.href = `https://www.instagram.com/${instagramUsername}/`;
-
-        // Show the Back button after a short delay
-        setTimeout(() => {
-            backButton.style.display = 'inline-block';
-            followButton.style.display = 'none';
-        }, 2000);
-    }
+    // Show the Back button after a short delay
+    setTimeout(() => {
+        // This simulates the user being back to the original page after visiting Instagram
+        backButton.style.display = 'inline-block';
+        followButton.style.display = 'none';
+    }, 2000);
 });
 
 // Step 3: Reveal password and use voice when Back button is clicked
