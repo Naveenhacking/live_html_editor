@@ -241,7 +241,38 @@
   <div class="container">
     <!-- Editor Section -->
     <div class="editor-container">
-      <textarea id="html-code" placeholder="Write HTML here..." oninput="updatePreview()"></textarea>
+          <textarea id="html-code" placeholder="Write HTML here..." oninput="updatePreview()">
+        <style>
+            /* Default CSS */
+          
+        </style>
+
+      </textarea>
+      <script>
+        const textarea = document.getElementById('html-code');
+        const defaultCSS = `
+<style>
+    /* Default CSS */
+  
+</style>
+`;
+
+        // Ensure the <style> tag exists and restore it if deleted
+        textarea.addEventListener('input', function () {
+            const content = textarea.value;
+
+            // Check if the <style> tag exists
+            if (!content.includes('<style>') || !content.includes('</style>')) {
+                // Restore the <style> tag with default content
+                textarea.value = defaultCSS.trim();
+            }
+        });
+
+        // Initialize the textarea with the default CSS if missing
+        if (!textarea.value.includes('<style>') || !textarea.value.includes('</style>')) {
+            textarea.value = defaultCSS.trim();
+        }
+    </script>
       <textarea id="css-code" placeholder="Write CSS here..." oninput="updatePreview()"></textarea>
       <textarea id="js-code" placeholder="Write JavaScript here..." oninput="updatePreview()"></textarea>
       <button onclick="copyCode()">Copy Code</button>
